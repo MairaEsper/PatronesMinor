@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class EmpleadoDAO implements IEmpleadoDAO{
     ArrayList<Empleado> empleados = new ArrayList<>();
@@ -11,9 +10,9 @@ public class EmpleadoDAO implements IEmpleadoDAO{
 
     @Override
     public Empleado obtenerEmpleado(String nombre) {
-        for(Empleado nombreEmpleado : empleados){
-            if(nombreEmpleado.getNombre().equals(nombre)){
-                return nombreEmpleado;
+        for(Empleado empleado : empleados){
+            if(empleado.getNombre().equals(nombre)){
+                return empleado;
             }
         }
         return null;
@@ -26,23 +25,18 @@ public class EmpleadoDAO implements IEmpleadoDAO{
 
     @Override
     public void actualizarEmpleado(Empleado empleado) {
-        Scanner scan  = new Scanner(System.in);
-        System.out.println("Ingrese el campo a actualizar (1. Puesto / 2. Salario):");
-        int campo = Integer.parseInt(scan.nextLine());
-        switch(campo){
-            case 1:
-                System.out.println("Ingrese el nuevo puesto del empleado:");
-                String nuevoPuesto = scan.nextLine();
-                empleado.setPuesto(nuevoPuesto);
-                break;
-            case 2:
-                System.out.println("Ingrese el nuevo salario del empleado:");
-                double nuevoSalario = Double.parseDouble(scan.nextLine());
-                empleado.setSalario(nuevoSalario);
-                break;
-            default:
-                System.out.println("Opción no válida.");
-                break;
+        int posicion = recorrerLista(empleado);
+        if(posicion != -1){
+            empleados.set(posicion, empleado);
         }
+    }
+    private int recorrerLista(Empleado empleado) {
+        for(int i = 0; i<empleados.size(); i++){
+            Empleado empleadoBuscado = empleados.get(i);
+            if(empleadoBuscado.getNombre().equals(empleado.getNombre())){
+                return i;
+            }
+        }
+        return -1;
     }
 }
